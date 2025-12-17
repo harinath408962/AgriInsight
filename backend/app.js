@@ -21,4 +21,8 @@ const weatherRoutes = require("./src/routes/weather.routes");
 
 app.use("/api/weather", weatherRoutes);
 
+const marketRoutes = require("./src/routes/market.routes");
+
+app.use("/api/market", marketRoutes);
+
 module.exports = app;
