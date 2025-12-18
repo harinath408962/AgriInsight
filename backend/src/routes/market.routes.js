@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
+
 const { getMarketPrices } = require("../services/market.service");
+const { getMarketAnalysis, getMarketInsight } = require("../utils/alertRules");
 
 router.get("/", async (req, res) => {
   try {
@@ -12,8 +14,21 @@ router.get("/", async (req, res) => {
       });
     }
 
+    // 1. Fetch structured market data
     const marketData = await getMarketPrices(state, crop);
-    res.json(marketData);
+
+    // 2. Analyze mandi-wise prices
+    const analysis = getMarketAnalysis(marketData.prices);
+
+    // 3. Generate actionable insight
+    const insight = getMarketInsight(analysis);
+
+    // 4. Final response
+    res.json({
+      ...marketData,
+      analysis,
+      insight,
+    });
   } catch (error) {
     res.status(500).json({ error: "Unable to fetch market data" });
   }

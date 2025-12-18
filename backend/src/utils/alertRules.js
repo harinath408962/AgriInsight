@@ -42,7 +42,45 @@ const getWeatherInsight = (weather) => {
   return "Weather conditions are generally stable for field activities.";
 };
 
+// -----------------------------
+// Market Intelligence (rule-based)
+// -----------------------------
+
+const getMarketAnalysis = (prices) => {
+  let highest = prices[0];
+  let lowest = prices[0];
+
+  prices.forEach((p) => {
+    if (p.modal > highest.modal) highest = p;
+    if (p.modal < lowest.modal) lowest = p;
+  });
+
+  const priceGap = highest.modal - lowest.modal;
+
+  return {
+    highest_mandi: highest.mandi,
+    lowest_mandi: lowest.mandi,
+    highest_price: highest.modal,
+    lowest_price: lowest.modal,
+    price_gap: priceGap,
+  };
+};
+
+const getMarketInsight = (analysis) => {
+  if (analysis.price_gap > 200) {
+    return `Large price variation detected. Selling in ${analysis.highest_mandi} mandi may give better returns today.`;
+  }
+
+  if (analysis.price_gap > 100) {
+    return `Moderate price variation across mandis. ${analysis.highest_mandi} mandi is slightly better for selling.`;
+  }
+
+  return "Market prices are relatively stable across nearby mandis today.";
+};
+
 module.exports = {
   getWeatherAlerts,
   getWeatherInsight,
+  getMarketAnalysis,
+  getMarketInsight,
 };
