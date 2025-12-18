@@ -14,10 +14,27 @@ const getWeatherByCity = async (city) => {
 
     return {
       city: data.name,
+
+      // Temperature
       temperature: data.main.temp,
+      feels_like: data.main.feels_like,
+      temp_min: data.main.temp_min,
+      temp_max: data.main.temp_max,
+
+      // Atmosphere
       humidity: data.main.humidity,
+      pressure: data.main.pressure,
+      visibility: data.visibility,
+
+      // Wind
+      wind_speed: data.wind.speed,
+
+      // Rain
       rainfall: data.rain ? data.rain["1h"] || 0 : 0,
+
+      // Condition
       condition: data.weather[0].description,
+      condition_main: data.weather[0].main,
     };
   } catch (error) {
     console.error("Weather API ERROR:");

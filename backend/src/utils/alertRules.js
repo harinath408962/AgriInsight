@@ -1,33 +1,48 @@
+// Weather Alerts (rule-based)
 const getWeatherAlerts = (weather) => {
   const alerts = [];
 
-  if (weather.temperature > 35) {
-    alerts.push("High temperature alert: Risk of crop stress");
+  // Heat stress
+  if (weather.feels_like > 35) {
+    alerts.push("High heat stress risk for crops");
   }
 
+  // Fungal disease risk
+  if (weather.humidity > 80 && weather.condition_main === "Mist") {
+    alerts.push("High fungal disease risk due to humidity and mist");
+  }
+
+  // Spraying risk
+  if (weather.wind_speed > 6) {
+    alerts.push("High wind speed – avoid pesticide spraying");
+  }
+
+  // Heavy rainfall
   if (weather.rainfall > 20) {
-    alerts.push("Heavy rainfall alert: Field waterlogging risk");
-  }
-
-  if (weather.humidity > 80) {
-    alerts.push("High humidity alert: Possible fungal disease risk");
+    alerts.push("Heavy rainfall – risk of waterlogging");
   }
 
   return alerts;
 };
 
-const getMarketAlerts = (prices) => {
-  const alerts = [];
-
-  const modalPrices = prices.map((p) => p.modal);
-  const max = Math.max(...modalPrices);
-  const min = Math.min(...modalPrices);
-
-  if (max - min > 200) {
-    alerts.push("High price variation across mandis");
+// Weather Insight (human-readable meaning)
+const getWeatherInsight = (weather) => {
+  if (weather.humidity > 80 && weather.condition_main === "Mist") {
+    return "Weather conditions favor fungal diseases, especially in leafy crops.";
   }
 
-  return alerts;
+  if (weather.feels_like > 35) {
+    return "High heat stress may affect crop growth and increase irrigation needs.";
+  }
+
+  if (weather.wind_speed > 6) {
+    return "Strong winds may reduce spraying effectiveness.";
+  }
+
+  return "Weather conditions are generally stable for field activities.";
 };
 
-module.exports = { getWeatherAlerts, getMarketAlerts };
+module.exports = {
+  getWeatherAlerts,
+  getWeatherInsight,
+};

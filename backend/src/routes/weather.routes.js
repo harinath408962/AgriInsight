@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { getWeatherByCity } = require("../services/weather.service");
-const { getWeatherAlerts } = require("../utils/alertRules");
+const { getWeatherAlerts, getWeatherInsight } = require("../utils/alertRules");
 
 router.get("/", async (req, res) => {
   try {
@@ -12,16 +12,20 @@ router.get("/", async (req, res) => {
       return res.status(400).json({ error: "City is required" });
     }
 
-    // Fetch weather data
+    // 1. Fetch enriched weather data
     const weatherData = await getWeatherByCity(city);
 
-    // Generate rule-based alerts
+    // 2. Generate rule-based alerts
     const alerts = getWeatherAlerts(weatherData);
 
-    // Send combined response
+    // 3. Generate human-readable insight
+    const insight = getWeatherInsight(weatherData);
+
+    // 4. Final response
     res.json({
       ...weatherData,
       alerts,
+      insight,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
