@@ -78,9 +78,34 @@ const getMarketInsight = (analysis) => {
   return "Market prices are relatively stable across nearby mandis today.";
 };
 
+// -----------------------------
+// Combined Weather + Market Insight
+// -----------------------------
+
+const getCombinedInsight = (weather, marketAnalysis) => {
+  // Weather risky, market stable
+  if (weather.alerts.length > 0 && marketAnalysis.price_gap <= 100) {
+    return "Weather conditions may affect field activities, but market prices remain stable for selling.";
+  }
+
+  // Weather risky, market volatile
+  if (weather.alerts.length > 0 && marketAnalysis.price_gap > 100) {
+    return "Adverse weather and price variation detected. Plan selling and field activities carefully.";
+  }
+
+  // Weather stable, market volatile
+  if (weather.alerts.length === 0 && marketAnalysis.price_gap > 100) {
+    return "Weather is favorable, but market prices vary significantly. Choose mandi wisely.";
+  }
+
+  // Both stable
+  return "Weather and market conditions are favorable for regular farming activities.";
+};
+
 module.exports = {
   getWeatherAlerts,
   getWeatherInsight,
   getMarketAnalysis,
   getMarketInsight,
+  getCombinedInsight,
 };

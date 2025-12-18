@@ -25,4 +25,7 @@ const marketRoutes = require("./src/routes/market.routes");
 
 app.use("/api/market", marketRoutes);
 
+const insightRoutes = require("./src/routes/insight.routes");
+app.use("/api/insight", insightRoutes);
+
 module.exports = app;
