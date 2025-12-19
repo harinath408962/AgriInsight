@@ -39,20 +39,33 @@ router.get("/", async (req, res) => {
     // 3. Generate combined insight
     const combinedInsight = getCombinedInsight(weatherData, marketAnalysis);
 
-    // 4. Final response
+    // 4. Prepare SUMMARY DATA (for cards / indicators)
+    const summary = {
+      weather_risk: weatherData.alerts.length > 0 ? "HIGH" : "LOW",
+      market_stability: marketAnalysis.price_gap > 100 ? "VOLATILE" : "STABLE",
+      best_mandi: marketAnalysis.highest_mandi,
+      price_gap: marketAnalysis.price_gap,
+    };
+
+    // 5. Final response
     res.json({
       location: {
         city,
         state,
       },
       crop,
+
       weather: weatherData,
+
       market: {
         ...marketData,
         analysis: marketAnalysis,
         insight: marketInsight,
       },
+
       combined_insight: combinedInsight,
+
+      summary,
     });
   } catch (error) {
     res.status(500).json({

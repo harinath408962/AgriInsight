@@ -21,11 +21,25 @@ router.get("/", async (req, res) => {
     // 3. Generate human-readable insight
     const insight = getWeatherInsight(weatherData);
 
-    // 4. Final response
+    // 4. Prepare graph-ready weather data
+    const graphData = {
+      factors: {
+        labels: ["Temperature", "Humidity", "Wind Speed", "Rainfall"],
+        values: [
+          weatherData.temperature,
+          weatherData.humidity,
+          weatherData.wind_speed,
+          weatherData.rainfall,
+        ],
+      },
+    };
+
+    // 5. Final response
     res.json({
       ...weatherData,
       alerts,
       insight,
+      graph_data: graphData,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
