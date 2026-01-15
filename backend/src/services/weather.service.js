@@ -53,11 +53,12 @@ async function getWeatherByCity(city) {
 
     return result;
   } catch (err) {
-    console.error("WEATHER API ERROR STATUS:", err.response?.status);
-    console.error("WEATHER API ERROR DATA:", err.response?.data);
-    console.error("WEATHER API ERROR MESSAGE:", err.message);
+    console.error("🌧 WEATHER SERVICE ERROR");
+    console.error("Message:", err.message);
+    console.error("Status:", err.response?.status);
+    console.error("Data:", err.response?.data);
 
-    throw new Error("Unable to load weather data");
+    throw new Error("Unable to fetch weather data");
   }
 }
 

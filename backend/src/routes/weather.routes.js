@@ -16,31 +16,22 @@ router.get("/", async (req, res) => {
     // 1️⃣ Fetch weather data
     const weatherData = await getWeatherByCity(city);
 
-    // 2️⃣ Generate agricultural advisory
+    // 2️⃣ Generate advisory list
     const advisory = generateAgriAdvisory(weatherData);
 
-    // 3️⃣ Simple legacy alerts (can be removed later if needed)
-    const alerts = [];
-    if (weatherData.wind_speed > 6) alerts.push("High wind – avoid spraying");
-    if (weatherData.humidity > 80) alerts.push("High humidity – fungal risk");
-    if (weatherData.temperature < 15)
-      alerts.push("Low temperature – cold stress risk");
+    // 3️⃣ Pick final decision (highest priority = lowest number)
+    let finalDecision = null;
+    if (Array.isArray(advisory) && advisory.length > 0) {
+      finalDecision = advisory.sort((a, b) => a.priority - b.priority)[0];
+    }
 
     // 4️⃣ Send response
     res.json({
       ...weatherData,
-
-      advisory, // 👈 MAIN OUTPUT (decision-based)
-
-      alerts, // 👈 legacy simple alerts
-
-      insight:
-        advisory && advisory.length > 0
-          ? advisory[0].message
-          : "Weather is suitable for field activities",
-
+      advisory,
+      final_decision: finalDecision,
       graph_data: {
-        labels: ["Temperature", "Humidity", "Wind", "Rain"],
+        labels: ["Temperature", "Humidity", "Wind", "Rainfall"],
         values: [
           weatherData.temperature,
           weatherData.humidity,

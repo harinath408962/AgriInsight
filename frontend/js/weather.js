@@ -1,17 +1,25 @@
 window.onload = () => {
   const citySelect = document.getElementById("city");
 
-  INDIAN_CITIES.sort((a, b) => a.city.localeCompare(b.city)).forEach(
-    ({ city, state }) => {
-      const option = document.createElement("option");
-      option.value = city;
-      option.textContent = `${city}, ${state}`;
-      citySelect.appendChild(option);
-    }
-  );
+  // SAFETY: if cities file fails, still work
+  if (typeof INDIAN_CITIES !== "undefined" && INDIAN_CITIES.length > 0) {
+    INDIAN_CITIES.sort((a, b) => a.city.localeCompare(b.city)).forEach(
+      ({ city, state }) => {
+        const option = document.createElement("option");
+        option.value = city.trim();
+        option.textContent = `${city}, ${state}`;
+        citySelect.appendChild(option);
+      }
+    );
+  } else {
+    // FALLBACK city
+    const option = document.createElement("option");
+    option.value = "Bengaluru";
+    option.textContent = "Bengaluru";
+    citySelect.appendChild(option);
+  }
 
-  // Load default city
-  loadWeather();
+  loadWeather(); // always call
 };
 
 const WEATHER_API = "http://localhost:5000/api/weather";
@@ -22,74 +30,61 @@ let forecastChart;
 async function loadWeather() {
   const city = document.getElementById("city").value;
 
+  const decisionDiv = document.getElementById("finalDecision");
   const dashboard = document.getElementById("dashboard");
-  const alertsDiv = document.getElementById("alerts");
-  const recentDiv = document.getElementById("recent");
 
-  dashboard.innerHTML = "Loading...";
-  alertsDiv.innerHTML = "";
-  recentDiv.innerHTML = "";
+  decisionDiv.innerHTML = "Loading advisory...";
+  dashboard.innerHTML = "Loading weather data...";
 
   try {
-    const res = await fetch(`${WEATHER_API}?city=${city}`);
+    const res = await fetch(`${WEATHER_API}?city=${encodeURIComponent(city)}`);
+    if (!res.ok) throw new Error("Weather API error");
+
     const data = await res.json();
 
-    // Dashboard cards
+    // ✅ SAFE FINAL DECISION SELECTION
+    const d = data.final_decision || data.advisory?.[0];
+
+    if (!d) {
+      decisionDiv.innerHTML = "No advisory available.";
+      dashboard.innerHTML = "";
+      return;
+    }
+
+    // ✅ HERO DECISION CARD
+    decisionDiv.innerHTML = `
+      <h2>${d.risk_level} RISK</h2>
+      <p><b>${d.decision}</b></p>
+      <p>${d.reason}</p>
+      <h4>What should you do?</h4>
+      <ul class="actions">
+        ${d.farmer_action.map((a) => `<li>${a}</li>`).join("")}
+      </ul>
+    `;
+
+    // ✅ WEATHER SUPPORT DATA
     dashboard.innerHTML = `
       <div class="card"><h3>City</h3><p>${data.city}</p></div>
       <div class="card"><h3>Temperature</h3><p>${data.temperature} °C</p></div>
       <div class="card"><h3>Humidity</h3><p>${data.humidity}%</p></div>
       <div class="card"><h3>Wind</h3><p>${data.wind_speed} m/s</p></div>
       <div class="card"><h3>Condition</h3><p>${data.condition}</p></div>
-      <div class="card"><h3>Insight</h3><p>${data.insight}</p></div>
+      <div class="card"><h3>Rainfall</h3><p>${data.rainfall} mm</p></div>
     `;
 
-    // Alerts
-    if (data.alerts && data.alerts.length > 0) {
-      alertsDiv.innerHTML = `
-        <h3>Alerts</h3>
-        <ul>${data.alerts.map((a) => `<li>${a}</li>`).join("")}</ul>
-      `;
-    }
-
-    // Recent Weather (mocked with real dates)
-    const today = new Date();
-
-    const recentMock = [1, 2, 3].map((daysAgo) => {
-      const d = new Date();
-      d.setDate(today.getDate() - daysAgo);
-
-      return {
-        date: d.toLocaleDateString("en-IN", {
-          weekday: "short",
-          day: "numeric",
-          month: "short",
-        }),
-        temp: data.temperature - daysAgo,
-        condition: data.condition,
-      };
-    });
-
-    recentDiv.innerHTML = recentMock
-      .map(
-        (d) =>
-          `<div class="recent-item">
-            <b>${d.date}</b> — ${d.temp.toFixed(1)} °C, ${d.condition}
-          </div>`
-      )
-      .join("");
-
-    // Load forecast chart
     loadForecast(city);
   } catch (err) {
-    dashboard.innerHTML = "Unable to load weather data.";
     console.error(err);
+    decisionDiv.innerHTML = "Unable to load advisory.";
+    dashboard.innerHTML = "";
   }
 }
 
 async function loadForecast(city) {
   try {
     const res = await fetch(`${FORECAST_API}?city=${city}`);
+    if (!res.ok) return;
+
     const data = await res.json();
 
     const labels = data.forecast.map((d) =>
@@ -99,10 +94,6 @@ async function loadForecast(city) {
         month: "short",
       })
     );
-
-    const temp = data.forecast.map((d) => d.avg_temp);
-    const humidity = data.forecast.map((d) => d.avg_humidity);
-    const wind = data.forecast.map((d) => d.avg_wind);
 
     const ctx = document.getElementById("forecastChart").getContext("2d");
 
@@ -114,34 +105,29 @@ async function loadForecast(city) {
         labels,
         datasets: [
           {
-            label: "Temperature (°C)",
-            data: temp,
-            borderColor: "#ff4d4d",
-            tension: 0.3,
+            label: "Temp (°C)",
+            data: data.forecast.map((d) => d.avg_temp),
+            borderColor: "#ef4444",
           },
           {
             label: "Humidity (%)",
-            data: humidity,
-            borderColor: "#4d79ff",
-            tension: 0.3,
+            data: data.forecast.map((d) => d.avg_humidity),
+            borderColor: "#3b82f6",
           },
           {
             label: "Wind (m/s)",
-            data: wind,
-            borderColor: "#2ecc71",
-            tension: 0.3,
+            data: data.forecast.map((d) => d.avg_wind),
+            borderColor: "#22c55e",
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {
-          legend: { position: "bottom" },
-        },
+        plugins: { legend: { position: "bottom" } },
       },
     });
   } catch (err) {
-    console.error("Forecast load error:", err);
+    console.error("Forecast error:", err);
   }
 }

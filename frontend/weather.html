@@ -12,69 +12,71 @@
         padding: 20px;
       }
 
+      .decision-card {
+        padding: 20px;
+        border-radius: 10px;
+        background: #fff3f3;
+        border-left: 6px solid #dc2626;
+        margin-top: 20px;
+      }
+
+      .decision-card h2 {
+        margin: 0;
+        color: #dc2626;
+      }
+
+      .decision-card p {
+        margin: 8px 0;
+      }
+
+      .actions li {
+        margin-left: 20px;
+      }
+
       .dashboard {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
-        margin-top: 20px;
+        margin-top: 25px;
       }
 
       .card {
         padding: 15px;
         border-radius: 8px;
         background: #f2f6ff;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
       .card h3 {
-        margin: 0;
         font-size: 14px;
         color: #555;
       }
 
       .card p {
-        margin-top: 5px;
         font-size: 18px;
         font-weight: bold;
-      }
-
-      .recent {
-        margin-top: 30px;
-      }
-
-      .recent-item {
-        padding: 10px 0;
-        border-bottom: 1px solid #ddd;
       }
     </style>
   </head>
 
   <body>
-    <h2>Weather Dashboard</h2>
+    <h2>AgriInsight – Weather Advisory</h2>
 
     <select id="city"></select>
-
     <button onclick="loadWeather()">Apply</button>
 
-    <!-- Dashboard -->
+    <!-- FINAL DECISION (HERO) -->
+    <div id="finalDecision" class="decision-card"></div>
+
+    <!-- SUPPORTING WEATHER DATA -->
     <div id="dashboard" class="dashboard"></div>
 
-    <!-- Alerts -->
-    <div id="alerts"></div>
-
-    <!-- Recent Weather -->
-    <div class="recent">
-      <h3>Recent Weather (Last 3 Days)</h3>
-      <div id="recent"></div>
-    </div>
-
-    <!-- Forecast -->
-    <h3>Upcoming 5 Days Weather Trend</h3>
+    <!-- FORECAST -->
+    <h3>Upcoming 5-Day Weather Trend</h3>
     <div style="height: 350px">
       <canvas id="forecastChart"></canvas>
     </div>
-    <script src="js/indianCities.js"></script>
 
+    <script src="js/indianCities.js"></script>
     <script src="js/weather.js"></script>
   </body>
 </html>
