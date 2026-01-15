@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const { getWeatherByCity } = require("../services/weather.service");
-const { getWeatherAlerts, getWeatherInsight } = require("../utils/alertRules");
+const { generateAgriAdvisory } = require("../utils/agriWeatherRules");
 
+// GET /api/weather?city=Bengaluru
 router.get("/", async (req, res) => {
   try {
     const { city } = req.query;
@@ -12,19 +13,34 @@ router.get("/", async (req, res) => {
       return res.status(400).json({ error: "City is required" });
     }
 
-    // 1. Fetch enriched weather data
+    // 1️⃣ Fetch weather data
     const weatherData = await getWeatherByCity(city);
 
-    // 2. Generate rule-based alerts
-    const alerts = getWeatherAlerts(weatherData);
+    // 2️⃣ Generate agricultural advisory
+    const advisory = generateAgriAdvisory(weatherData);
 
-    // 3. Generate human-readable insight
-    const insight = getWeatherInsight(weatherData);
+    // 3️⃣ Simple legacy alerts (can be removed later if needed)
+    const alerts = [];
+    if (weatherData.wind_speed > 6) alerts.push("High wind – avoid spraying");
+    if (weatherData.humidity > 80) alerts.push("High humidity – fungal risk");
+    if (weatherData.temperature < 15)
+      alerts.push("Low temperature – cold stress risk");
 
-    // 4. Prepare graph-ready weather data
-    const graphData = {
-      factors: {
-        labels: ["Temperature", "Humidity", "Wind Speed", "Rainfall"],
+    // 4️⃣ Send response
+    res.json({
+      ...weatherData,
+
+      advisory, // 👈 MAIN OUTPUT (decision-based)
+
+      alerts, // 👈 legacy simple alerts
+
+      insight:
+        advisory && advisory.length > 0
+          ? advisory[0].message
+          : "Weather is suitable for field activities",
+
+      graph_data: {
+        labels: ["Temperature", "Humidity", "Wind", "Rain"],
         values: [
           weatherData.temperature,
           weatherData.humidity,
@@ -32,17 +48,10 @@ router.get("/", async (req, res) => {
           weatherData.rainfall,
         ],
       },
-    };
-
-    // 5. Final response
-    res.json({
-      ...weatherData,
-      alerts,
-      insight,
-      graph_data: graphData,
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error("Weather route error:", err);
+    res.status(500).json({ error: "Unable to fetch weather data" });
   }
 });
 

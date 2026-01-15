@@ -1,58 +1,64 @@
 const axios = require("axios");
 
-const getWeatherByCity = async (city) => {
+const WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather";
+
+// In-memory cache
+const cache = {};
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
+async function getWeatherByCity(city) {
+  const key = city.toLowerCase();
+
+  // ✅ Cache hit
+  if (cache[key] && Date.now() - cache[key].time < CACHE_TTL) {
+    return cache[key].data;
+  }
+
   try {
-    console.log("API KEY:", process.env.OPENWEATHER_API_KEY);
-
-    const apiKey = process.env.OPENWEATHER_API_KEY;
-
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-    const response = await axios.get(url);
-
-    const data = response.data;
-
-    return {
-      city: data.name,
-
-      // Temperature
-      temperature: data.main.temp,
-      feels_like: data.main.feels_like,
-      temp_min: data.main.temp_min,
-      temp_max: data.main.temp_max,
-
-      // Atmosphere
-      humidity: data.main.humidity,
-      pressure: data.main.pressure,
-      visibility: data.visibility,
-
-      // Wind
-      wind_speed: data.wind.speed,
-
-      // Rain
-      rainfall: data.rain ? data.rain["1h"] || 0 : 0,
-
-      // Condition
-      condition: data.weather[0].description,
-      condition_main: data.weather[0].main,
-    };
-  } catch (error) {
-    console.error("Weather API ERROR:");
-
-    if (error.response) {
-      // API responded with error status
-      console.error("Status:", error.response.status);
-      console.error("Data:", error.response.data);
-    } else if (error.request) {
-      // Request made but no response
-      console.error("No response received");
-    } else {
-      // Other error
-      console.error("Error message:", error.message);
+    // ✅ Correct env variable check
+    if (!process.env.OPENWEATHER_API_KEY) {
+      throw new Error("OPENWEATHER_API_KEY is missing in .env");
     }
 
-    throw new Error("Unable to fetch weather data");
+    const response = await axios.get(WEATHER_URL, {
+      params: {
+        q: city,
+        units: "metric",
+        appid: process.env.OPENWEATHER_API_KEY,
+      },
+      timeout: 5000,
+    });
+
+    const w = response.data;
+
+    const result = {
+      city: w.name,
+      temperature: w.main.temp,
+      feels_like: w.main.feels_like,
+      temp_min: w.main.temp_min,
+      temp_max: w.main.temp_max,
+      humidity: w.main.humidity,
+      pressure: w.main.pressure,
+      wind_speed: w.wind.speed,
+      rainfall: w.rain && w.rain["1h"] ? w.rain["1h"] : 0,
+      condition: w.weather[0].description,
+      condition_main: w.weather[0].main,
+    };
+
+    // Save to cache
+    cache[key] = {
+      time: Date.now(),
+      data: result,
+    };
+
+    return result;
+  } catch (err) {
+    console.error("WEATHER API ERROR STATUS:", err.response?.status);
+    console.error("WEATHER API ERROR DATA:", err.response?.data);
+    console.error("WEATHER API ERROR MESSAGE:", err.message);
+
+    throw new Error("Unable to load weather data");
   }
-};
+}
 
 module.exports = { getWeatherByCity };

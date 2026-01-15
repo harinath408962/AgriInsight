@@ -7,9 +7,13 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/api/market/latest", require("./routes/marketFallback.routes"));
+app.use("/api/weather", require("./routes/weather.routes"));
+app.use("/api/market", require("./routes/market.routes"));
+app.use("/api/market/fallback", require("./routes/marketFallback.routes"));
+app.use("/api/market/trend", require("./routes/marketTrend.routes"));
 
-// Health check
+app.use("/api/weather/forecast", require("./routes/weatherForecast.routes"));
+
 app.get("/", (req, res) => {
   res.send("AgriInsight backend running");
 });

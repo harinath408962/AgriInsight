@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AgriInsight – Market</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/market.css" />
+  </head>
+  <body>
+    <h2>Market Dashboard</h2>
+
+    <div style="width: 800px; height: 400px">
+      <canvas id="marketChart"></canvas>
+    </div>
+
+    <div class="controls">
+      <select id="state">
+        <option>Karnataka</option>
+        <option>West Bengal</option>
+        <option>Maharashtra</option>
+        <option>Andhra Pradesh</option>
+        <option>Telangana</option>
+        <option>Tamil Nadu</option>
+        <option>Kerala</option>
+        <option>Uttar Pradesh</option>
+      </select>
+
+      <select id="crop">
+        <option>Tomato</option>
+        <option>Potato</option>
+        <option>Onion</option>
+        <option>Green Chilli</option>
+        <option>Brinjal</option>
+      </select>
+
+      <select id="sort">
+        <option value="desc">Price: High → Low</option>
+        <option value="asc">Price: Low → High</option>
+      </select>
+
+      <button onclick="loadMarket()">Apply</button>
+    </div>
+
+    <div id="insights"></div>
+
+    <table id="marketTable" border="1">
+      <thead>
+        <tr>
+          <th>Market</th>
+          <th>District</th>
+          <th>Modal Price</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script src="js/market-v2.js"></script>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-require("dotenv").config(); // MUST be first
+require("dotenv").config(); // 🔑 LOAD .env FIRST
 
 const app = require("./src/app");
 

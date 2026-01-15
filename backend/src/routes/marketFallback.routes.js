@@ -9,21 +9,29 @@ router.get("/", async (req, res) => {
     const { state, crop } = req.query;
 
     if (!state || !crop) {
-      return res.status(400).json({
-        error: "state and crop are required",
-      });
+      return res.status(400).json({ error: "state and crop are required" });
     }
 
-    const result = await fetchMarketWithFallback({
+    const data = await fetchMarketWithFallback({
       state,
       commodity: crop,
     });
 
-    res.json(result);
-  } catch (err) {
-    res.status(500).json({
-      error: err.message,
+    if (!data.prices || data.prices.length === 0) {
+      return res.json({
+        status: "NO_DATA",
+        latest_date: "Unknown",
+        prices: [],
+      });
+    }
+
+    res.json({
+      status: "FALLBACK",
+      latest_date: data.latest_date,
+      prices: data.prices,
     });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

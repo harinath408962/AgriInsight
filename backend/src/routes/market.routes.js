@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const { getMarketPrices } = require("../services/market.service");
+const { getMarketPrices } = require("../services/agmarknet.service");
+
 const { getMarketAnalysis, getMarketInsight } = require("../utils/alertRules");
 
 router.get("/", async (req, res) => {
@@ -15,7 +16,24 @@ router.get("/", async (req, res) => {
     }
 
     // 1. Fetch structured market data
-    const marketData = await getMarketPrices(state, crop);
+    let marketData;
+
+    try {
+      marketData = await getMarketPrices(state, crop);
+    } catch (err) {
+      return res.json({
+        status: "NO_DATA",
+        message: `No ${crop} price data reported for ${state}`,
+      });
+    }
+
+    // Extra safety: empty data case
+    if (!marketData || !marketData.prices || marketData.prices.length === 0) {
+      return res.json({
+        status: "NO_DATA",
+        message: `No ${crop} price data reported for ${state}`,
+      });
+    }
 
     // 2. Analyze mandi-wise prices
     const analysis = getMarketAnalysis(marketData.prices);
@@ -31,10 +49,10 @@ router.get("/", async (req, res) => {
 
     // 5. Final response (logic + graph data)
     res.json({
+      status: "OK",
       ...marketData,
       analysis,
       insight,
-
       graph_data: {
         price_comparison: {
           labels: mandiLabels,
@@ -54,3 +72,31 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
+
+// Step 1: try live API
+try {
+  const liveData = await getMarketPrices(state, crop);
+  if (liveData && liveData.prices.length > 0) {
+    return res.json({
+      source: "LIVE_API",
+      ...liveData,
+    });
+  }
+} catch (e) {
+  // ignore and fallback
+}
+
+// Step 2: fallback to snapshot
+const snapshot = loadSnapshotFromFile(state, crop);
+if (snapshot) {
+  return res.json({
+    source: "SNAPSHOT",
+    ...snapshot,
+  });
+}
+
+// Step 3: truly no data
+return res.json({
+  status: "NO_DATA",
+  message: "No market data available",
+});
