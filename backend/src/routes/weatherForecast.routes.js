@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const { get5DayForecast } = require("../services/weatherForecast.service");
+const { getWeatherForecast } = require("../services/weatherForecast.service");
 
+// GET /api/weather/forecast?city=Bengaluru
 router.get("/", async (req, res) => {
   try {
     const { city } = req.query;
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
       return res.status(400).json({ error: "City is required" });
     }
 
-    const forecast = await get5DayForecast(city);
+    const forecast = await getWeatherForecast(city);
 
     res.json({
       city,
@@ -19,8 +20,8 @@ router.get("/", async (req, res) => {
       forecast,
     });
   } catch (err) {
-    console.error("FORECAST ERROR:", err.message);
-    res.status(500).json({ error: "Unable to load forecast data" });
+    console.error("Forecast route error:", err);
+    res.status(500).json({ error: "Unable to fetch forecast data" });
   }
 });
 
