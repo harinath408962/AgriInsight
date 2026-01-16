@@ -1,3 +1,19 @@
+/* ============================
+   API BASE (LOCAL vs DEPLOYED)
+   ============================ */
+const API_BASE =
+  location.hostname === "localhost"
+    ? "http://localhost:5000/api"
+    : "https://agri-insight-sgui.onrender.com/api";
+
+const WEATHER_API = `${API_BASE}/weather`;
+const FORECAST_API = `${API_BASE}/weather/forecast`;
+
+let forecastChart;
+
+/* ============================
+   INIT
+   ============================ */
 window.onload = () => {
   const citySelect = document.getElementById("city");
 
@@ -19,14 +35,12 @@ window.onload = () => {
     citySelect.appendChild(option);
   }
 
-  loadWeather(); // always call
+  loadWeather();
 };
 
-const WEATHER_API = "http://localhost:5000/api/weather";
-const FORECAST_API = "http://localhost:5000/api/weather/forecast";
-
-let forecastChart;
-
+/* ============================
+   LOAD WEATHER + ADVISORY
+   ============================ */
 async function loadWeather() {
   const city = document.getElementById("city").value;
 
@@ -42,7 +56,7 @@ async function loadWeather() {
 
     const data = await res.json();
 
-    // ✅ SAFE FINAL DECISION SELECTION
+    // FINAL DECISION (SAFE)
     const d = data.final_decision || data.advisory?.[0];
 
     if (!d) {
@@ -51,7 +65,7 @@ async function loadWeather() {
       return;
     }
 
-    // ✅ HERO DECISION CARD
+    /* ===== HERO DECISION ===== */
     decisionDiv.innerHTML = `
       <h2>${d.risk_level} RISK</h2>
       <p><b>${d.decision}</b></p>
@@ -62,7 +76,7 @@ async function loadWeather() {
       </ul>
     `;
 
-    // ✅ WEATHER SUPPORT DATA
+    /* ===== SUPPORTING DATA ===== */
     dashboard.innerHTML = `
       <div class="card"><h3>City</h3><p>${data.city}</p></div>
       <div class="card"><h3>Temperature</h3><p>${data.temperature} °C</p></div>
@@ -80,9 +94,12 @@ async function loadWeather() {
   }
 }
 
+/* ============================
+   LOAD FORECAST
+   ============================ */
 async function loadForecast(city) {
   try {
-    const res = await fetch(`${FORECAST_API}?city=${city}`);
+    const res = await fetch(`${FORECAST_API}?city=${encodeURIComponent(city)}`);
     if (!res.ok) return;
 
     const data = await res.json();

@@ -1,4 +1,9 @@
-const API = "http://localhost:5000/api/market";
+const API_BASE =
+  location.hostname === "localhost"
+    ? "http://localhost:5000/api"
+    : "https://agri-insight-sgui.onrender.com/api";
+
+const API = `${API_BASE}/market`;
 
 let chart;
 
@@ -26,7 +31,6 @@ async function loadMarket() {
   const crop = cropSelect.value;
   const sortOrder = sortSelect.value;
 
-  // 🛑 HARD GUARD (CRITICAL)
   if (!state || !crop) {
     insights.innerHTML = "Please select state and crop.";
     return;
@@ -49,10 +53,10 @@ async function loadMarket() {
     return;
   }
 
-  /* ========== FALLBACK DATA ========== */
+  /* ---------- FALLBACK ---------- */
   if (data.status !== "OK") {
     const fallbackRes = await fetch(
-      `http://localhost:5000/api/market/fallback?state=${encodeURIComponent(
+      `${API_BASE}/market/fallback?state=${encodeURIComponent(
         state
       )}&crop=${encodeURIComponent(crop)}`
     );
@@ -79,7 +83,7 @@ async function loadMarket() {
     return;
   }
 
-  /* ========== LIVE DATA ========== */
+  /* ---------- LIVE DATA ---------- */
   const prices = sortPrices([...data.prices], sortOrder);
 
   insights.innerHTML = `
