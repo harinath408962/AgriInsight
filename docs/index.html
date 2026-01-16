@@ -1,13 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>AgriInsight</title>
+    <meta charset="UTF-8" />
+    <title>AgriInsight – Smart Farming Decisions</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        color: #1f2937;
+      }
+
+      header {
+        padding: 40px 20px;
+        text-align: center;
+        background: #0f766e;
+        color: white;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 36px;
+        letter-spacing: 1px;
+      }
+
+      header p {
+        margin-top: 10px;
+        font-size: 16px;
+        opacity: 0.9;
+      }
+
+      main {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      .intro {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .intro h2 {
+        font-size: 26px;
+        margin-bottom: 10px;
+      }
+
+      .intro p {
+        font-size: 15px;
+        color: #374151;
+        max-width: 700px;
+        margin: auto;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+      }
+
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+      }
+
+      .card h3 {
+        margin-top: 0;
+        font-size: 20px;
+        color: #0f766e;
+      }
+
+      .card p {
+        font-size: 14px;
+        color: #4b5563;
+        line-height: 1.5;
+      }
+
+      .card a {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 16px;
+        background: #0f766e;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+
+      .card a:hover {
+        background: #115e59;
+      }
+
+      footer {
+        margin-top: 60px;
+        padding: 15px;
+        text-align: center;
+        font-size: 13px;
+        color: #6b7280;
+      }
+    </style>
   </head>
+
   <body>
-    <h1>AgriInsight</h1>
-    <ul>
-      <li><a href="weather.html">Weather Advisory</a></li>
-      <li><a href="market.html">Market Dashboard</a></li>
-    </ul>
+    <header>
+      <h1>AgriInsight</h1>
+      <p>AI-powered insights for smarter farming decisions</p>
+    </header>
+
+    <main>
+      <div class="intro">
+        <h2>Empowering Farmers with Data</h2>
+        <p>
+          AgriInsight combines real-time weather data and agricultural market
+          prices to help farmers make informed, practical, and timely decisions.
+        </p>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <h3>🌦 Weather Advisory</h3>
+          <p>
+            Get clear, actionable weather-based advice such as when to spray,
+            irrigate, or avoid field activities — explained in simple language.
+          </p>
+          <a href="weather.html">View Weather Advisory</a>
+        </div>
+
+        <div class="card">
+          <h3>📈 Market Dashboard</h3>
+          <p>
+            Explore mandi-wise crop prices, compare markets, identify trends,
+            and decide the right time and place to sell your produce.
+          </p>
+          <a href="market.html">View Market Dashboard</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>© 2026 AgriInsight | Built for Smart & Sustainable Farming</footer>
   </body>
 </html>
