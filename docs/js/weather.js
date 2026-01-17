@@ -38,6 +38,8 @@ window.onload = () => {
   loadWeather();
 };
 
+const citySelect = document.getElementById("city");
+
 /* ============================
    LOAD WEATHER + ADVISORY
    ============================ */
@@ -66,15 +68,39 @@ async function loadWeather() {
     }
 
     /* ===== HERO DECISION ===== */
+    const riskClass =
+      d.risk_level === "HIGH"
+        ? "high"
+        : d.risk_level === "MEDIUM"
+        ? "medium"
+        : "low";
+
+    decisionDiv.className = `decision-card ${riskClass}`;
+
     decisionDiv.innerHTML = `
-      <h2>${d.risk_level} RISK</h2>
-      <p><b>${d.decision}</b></p>
-      <p>${d.reason}</p>
-      <h4>What should you do?</h4>
-      <ul class="actions">
-        ${d.farmer_action.map((a) => `<li>${a}</li>`).join("")}
-      </ul>
-    `;
+  <button id="speakBtn" style="float:right;margin-top:10px;">
+  🔊 Speak Advisory
+</button>
+
+
+  <p><b>${d.decision}</b></p>
+  <p>${d.reason}</p>
+
+
+  <h4>Recommended Action</h4>
+  <ul class="actions">
+    ${d.farmer_action.map((a) => `<li>${a}</li>`).join("")}
+  </ul>
+`;
+
+    document.getElementById("speakBtn").onclick = () => {
+      const msg = new SpeechSynthesisUtterance(`${d.decision}. ${d.reason}`);
+      speechSynthesis.speak(msg);
+      const actionMsg = new SpeechSynthesisUtterance(
+        `Recommended actions are: ${d.farmer_action.join(", ")}`
+      );
+      speechSynthesis.speak(actionMsg);
+    };
 
     /* ===== SUPPORTING DATA ===== */
     dashboard.innerHTML = `
@@ -104,22 +130,47 @@ async function loadForecast(city) {
 
     const data = await res.json();
 
-    const labels = data.forecast.map((d) =>
-      new Date(d.date).toLocaleDateString("en-IN", {
-        weekday: "short",
+    // Table references
+    const dateRow = document.getElementById("forecastDates");
+    const tempRow = document.getElementById("row-temp");
+    const humRow = document.getElementById("row-humidity");
+    const windRow = document.getElementById("row-wind");
+    const rainRow = document.getElementById("row-rain");
+
+    // RESET rows (keep first label cell)
+    dateRow.innerHTML = `<th>Metric ↓ / Date →</th>`;
+    tempRow.innerHTML = `<td style="color:#ef4444">Temperature (°C)</td>`;
+    humRow.innerHTML = `<td style="color:#3b82f6">Humidity (%)</td>`;
+    windRow.innerHTML = `<td style="color:#22c55e">Wind (m/s)</td>`;
+    rainRow.innerHTML = `<td style="color:#0ea5e9">Rainfall (mm)</td>`;
+
+    data.forecast.forEach((day) => {
+      const label = new Date(day.date).toLocaleDateString("en-IN", {
         day: "numeric",
         month: "short",
-      })
-    );
+      });
 
+      dateRow.innerHTML += `<th>${label}</th>`;
+      tempRow.innerHTML += `<td style="color:#ef4444">${day.avg_temp}</td>`;
+      humRow.innerHTML += `<td style="color:#3b82f6">${day.avg_humidity}</td>`;
+      windRow.innerHTML += `<td style="color:#22c55e">${day.avg_wind}</td>`;
+      rainRow.innerHTML += `<td style="color:#0ea5e9">${
+        day.rainfall ?? 0
+      }</td>`;
+    });
+
+    /* ===== GRAPH ===== */
     const ctx = document.getElementById("forecastChart").getContext("2d");
-
     if (forecastChart) forecastChart.destroy();
 
     forecastChart = new Chart(ctx, {
       type: "line",
       data: {
-        labels,
+        labels: data.forecast.map((d) =>
+          new Date(d.date).toLocaleDateString("en-IN", {
+            weekday: "short",
+          })
+        ),
         datasets: [
           {
             label: "Temp (°C)",
@@ -135,6 +186,11 @@ async function loadForecast(city) {
             label: "Wind (m/s)",
             data: data.forecast.map((d) => d.avg_wind),
             borderColor: "#22c55e",
+          },
+          {
+            label: "Rainfall (mm)",
+            data: data.forecast.map((d) => d.rainfall ?? 0),
+            borderColor: "#0ea5e9",
           },
         ],
       },

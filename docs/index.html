@@ -2,153 +2,100 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>AgriInsight – Smart Farming Decisions</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <title>AgriInsight</title>
     <style>
       body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-        color: #1f2937;
-      }
-
-      header {
+        font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: auto;
         padding: 40px 20px;
-        text-align: center;
-        background: #0f766e;
-        color: white;
+        background: #f9fafb;
       }
-
-      header h1 {
-        margin: 0;
+      h1 {
         font-size: 36px;
-        letter-spacing: 1px;
-      }
-
-      header p {
-        margin-top: 10px;
-        font-size: 16px;
-        opacity: 0.9;
-      }
-
-      main {
-        max-width: 1000px;
-        margin: 40px auto;
-        padding: 0 20px;
-      }
-
-      .intro {
-        text-align: center;
-        margin-bottom: 40px;
-      }
-
-      .intro h2 {
-        font-size: 26px;
         margin-bottom: 10px;
       }
-
-      .intro p {
-        font-size: 15px;
-        color: #374151;
-        max-width: 700px;
-        margin: auto;
+      .subtitle {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 30px;
       }
-
-      .cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 25px;
-        margin-top: 30px;
+      .features {
+        margin-bottom: 30px;
       }
-
-      .card {
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      .features li {
+        margin: 10px 0;
+        font-size: 16px;
       }
-
-      .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+      .actions {
+        margin: 30px 0;
       }
-
-      .card h3 {
-        margin-top: 0;
-        font-size: 20px;
-        color: #0f766e;
-      }
-
-      .card p {
-        font-size: 14px;
-        color: #4b5563;
-        line-height: 1.5;
-      }
-
-      .card a {
+      .actions a {
         display: inline-block;
-        margin-top: 15px;
-        padding: 10px 16px;
-        background: #0f766e;
-        color: white;
+        padding: 14px 24px;
+        margin-right: 15px;
         text-decoration: none;
+        background: #2563eb;
+        color: white;
         border-radius: 6px;
-        font-size: 14px;
+        font-weight: bold;
       }
-
-      .card a:hover {
-        background: #115e59;
+      .actions a.secondary {
+        background: #16a34a;
       }
-
+      .lang {
+        margin: 20px 0;
+      }
+      .lang button {
+        margin-right: 10px;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        background: white;
+        cursor: pointer;
+      }
       footer {
-        margin-top: 60px;
-        padding: 15px;
-        text-align: center;
+        margin-top: 40px;
         font-size: 13px;
-        color: #6b7280;
+        color: #666;
+        border-top: 1px solid #ddd;
+        padding-top: 15px;
       }
     </style>
   </head>
-
   <body>
-    <header>
-      <h1>AgriInsight</h1>
-      <p>AI-powered insights for smarter farming decisions</p>
-    </header>
+    <h1>AgriInsight</h1>
+    <div class="subtitle">Smart Decision Support for Farmers</div>
 
-    <main>
-      <div class="intro">
-        <h2>Empowering Farmers with Data</h2>
-        <p>
-          AgriInsight combines real-time weather data and agricultural market
-          prices to help farmers make informed, practical, and timely decisions.
-        </p>
+    <p>
+      Convert weather and market data into clear, actionable crop advisories.
+    </p>
+
+    <ul class="features">
+      <li>✔ Weather-based risk and field activity guidance</li>
+      <li>✔ Market price trend analysis for sell / hold decisions</li>
+      <li>✔ Explainable advisories with clear actions</li>
+    </ul>
+
+    <div class="lang">
+      <b>Choose Language (Beta):</b><br /><br />
+      <button>English</button>
+      <button>हिंदी</button>
+      <button>ಕನ್ನಡ</button>
+      <button>తెలుగు</button>
+      <div style="font-size: 13px; color: #777; margin-top: 5px">
+        Currently supports English. Other languages planned.
       </div>
+    </div>
 
-      <div class="cards">
-        <div class="card">
-          <h3>🌦 Weather Advisory</h3>
-          <p>
-            Get clear, actionable weather-based advice such as when to spray,
-            irrigate, or avoid field activities — explained in simple language.
-          </p>
-          <a href="weather.html">View Weather Advisory</a>
-        </div>
+    <div class="actions">
+      <a href="weather.html">Weather Advisory</a>
+      <a href="market.html" class="secondary">Market Advisory</a>
+    </div>
 
-        <div class="card">
-          <h3>📈 Market Dashboard</h3>
-          <p>
-            Explore mandi-wise crop prices, compare markets, identify trends,
-            and decide the right time and place to sell your produce.
-          </p>
-          <a href="market.html">View Market Dashboard</a>
-        </div>
-      </div>
-    </main>
-
-    <footer>© 2026 AgriInsight | Built for Smart & Sustainable Farming</footer>
+    <footer>
+      <p>Built as part of AgriConnect – Academic Project</p>
+      <p>Data sources: OpenWeather, Agmarknet</p>
+      <p>Advisories are guidance-only and not guaranteed outcomes.</p>
+    </footer>
   </body>
 </html>

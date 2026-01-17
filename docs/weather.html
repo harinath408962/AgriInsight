@@ -56,11 +56,93 @@
         font-weight: bold;
       }
     </style>
+
+    <style>
+      .decision-card {
+        background: #f0fdf4;
+        border-left: 6px solid #16a34a;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+
+      .decision-card.low {
+        border-color: #16a34a;
+        background: #f0fdf4;
+      }
+
+      .decision-card.medium {
+        border-color: #f59e0b;
+        background: #fff7ed;
+      }
+
+      .decision-card.high {
+        border-color: #dc2626;
+        background: #fff1f2;
+      }
+
+      .decision-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .decision-header h2 {
+        margin: 0;
+      }
+
+      .lang-tools {
+        font-size: 14px;
+        color: #555;
+      }
+
+      .forecast-boxes {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        margin-top: 25px;
+      }
+
+      .forecast-day {
+        background: #f8fafc;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .forecast-day h4 {
+        margin: 5px 0;
+        font-size: 14px;
+      }
+
+      .forecast-day p {
+        margin: 3px 0;
+        font-size: 13px;
+      }
+
+      #forecastTable {
+        width: 100%;
+        margin-top: 15px;
+        border-collapse: collapse;
+        background: #ffffff;
+      }
+
+      #forecastTable th,
+      #forecastTable td {
+        text-align: center;
+        font-size: 13px;
+      }
+
+      #forecastTable th {
+        background: #f8fafc;
+      }
+    </style>
   </head>
 
   <body>
     <h2>AgriInsight – Weather Advisory</h2>
 
+    <label>Select City:</label>
     <select id="city"></select>
     <button onclick="loadWeather()">Apply</button>
 
@@ -69,6 +151,31 @@
 
     <!-- SUPPORTING WEATHER DATA -->
     <div id="dashboard" class="dashboard"></div>
+
+    <!-- 5-DAY FORECAST -->
+    <h3>5-Day Weather Summary</h3>
+
+    <table id="forecastTable" border="1" cellspacing="0" cellpadding="8">
+      <thead>
+        <tr id="forecastDates">
+          <th>Metric ↓ / Date →</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="row-temp">
+          <td style="color: #ef4444">Temperature (°C)</td>
+        </tr>
+        <tr id="row-humidity">
+          <td style="color: #3b82f6">Humidity (%)</td>
+        </tr>
+        <tr id="row-wind">
+          <td style="color: #22c55e">Wind (m/s)</td>
+        </tr>
+        <tr id="row-rain">
+          <td style="color: #0ea5e9">Rainfall (mm)</td>
+        </tr>
+      </tbody>
+    </table>
 
     <!-- FORECAST -->
     <h3>Upcoming 5-Day Weather Trend</h3>
