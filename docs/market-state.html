@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AgriInsight – State Market Overview</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 5px;
+    }
+
+    .controls {
+      margin: 10px 0 20px;
+    }
+
+    select, button {
+      padding: 6px;
+      margin-right: 6px;
+    }
+
+    .card {
+      background: #f0f9ff;
+      border-left: 6px solid #0284c7;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .crop-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background: #f8fafc;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>AgriInsight – State Market Overview</h2>
+  <p style="font-size:13px;color:#555;">
+    Shows crops that are actually available today based on real-time market data.
+  </p>
+
+  <!-- INPUT -->
+  <div class="controls">
+    <label>State:</label>
+    <select id="state"></select>
+    <button onclick="loadStateOverview()">Apply</button>
+  </div>
+
+  <!-- INSIGHT -->
+  <div id="summary" class="card">
+    Select a state to view market overview.
+  </div>
+
+  <!-- TOP 10 DASHBOARD -->
+  <h3>Top 10 Crops Today</h3>
+  <div id="top10" class="grid"></div>
+
+  <!-- FULL TABLE -->
+  <h3>All Available Crops</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Crop</th>
+        <th>Avg Price (₹)</th>
+        <th>Highest Market</th>
+        <th>Lowest Market</th>
+        <th>Markets Reporting</th>
+      </tr>
+    </thead>
+    <tbody id="overviewTable"></tbody>
+  </table>
+
+  <script src="js/market-state.js"></script>
+</body>
+</html>

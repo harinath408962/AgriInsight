@@ -1,4 +1,41 @@
 /* ============================
+   NORMALIZE ADVISORY TEXT
+   ============================ */
+function normalizeAdvisory(d) {
+  let statusText;
+
+  if (d.risk_level === "HIGH") {
+    statusText = "High weather risk today";
+  } else if (d.risk_level === "MEDIUM") {
+    statusText = "Moderate weather risk today";
+  } else {
+    statusText = "Weather is safe today";
+  }
+
+  const simpleActions = d.farmer_action.map((a) => {
+    const text = a.toLowerCase();
+
+    if (text.includes("irrigation"))
+      return "Avoid adding extra water today";
+    if (text.includes("inspect"))
+      return "Check crops and surroundings regularly";
+    if (text.includes("harvest"))
+      return "Plan outdoor work carefully";
+    if (text.includes("fungal"))
+      return "Watch for plant diseases";
+
+    return a;
+  });
+
+  return {
+    status: statusText,
+    reason: d.reason,
+    actions: simpleActions,
+  };
+}
+
+
+/* ============================
    API BASE (LOCAL vs DEPLOYED)
    ============================ */
 const API_BASE =
@@ -60,6 +97,8 @@ async function loadWeather() {
 
     // FINAL DECISION (SAFE)
     const d = data.final_decision || data.advisory?.[0];
+    const advisory = normalizeAdvisory(d);
+
 
     if (!d) {
       decisionDiv.innerHTML = "No advisory available.";
@@ -83,14 +122,14 @@ async function loadWeather() {
 </button>
 
 
-  <p><b>${d.decision}</b></p>
-  <p>${d.reason}</p>
+  <p><b>${advisory.status}</b></p>
+<p>${advisory.reason}</p>
 
+<h4>Recommended Action</h4>
+<ul class="actions">
+  ${advisory.actions.map((a) => `<li>${a}</li>`).join("")}
+</ul>
 
-  <h4>Recommended Action</h4>
-  <ul class="actions">
-    ${d.farmer_action.map((a) => `<li>${a}</li>`).join("")}
-  </ul>
 `;
 
     document.getElementById("speakBtn").onclick = () => {
@@ -204,3 +243,5 @@ async function loadForecast(city) {
     console.error("Forecast error:", err);
   }
 }
+
+

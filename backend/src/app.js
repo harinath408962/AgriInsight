@@ -15,6 +15,9 @@ app.use("/api/market", require("./routes/market.routes"));
 app.use("/api/market/fallback", require("./routes/marketFallback.routes"));
 app.use("/api/market/trend", require("./routes/marketTrend.routes"));
 
+app.use("/api/market/state-overview", require("./routes/marketOverview.routes"));
+
+
 app.get("/", (req, res) => {
   res.send("AgriInsight backend running");
 });

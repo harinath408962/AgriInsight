@@ -5,16 +5,19 @@ const DATA_GOV_URL =
 
 async function getMarketPrices(state, crop) {
   try {
-    const response = await axios.get(DATA_GOV_URL, {
-      params: {
-        "api-key": process.env.DATA_GOV_API_KEY,
-        format: "json",
-        limit: 500,
-        "filters[state]": state,
-        "filters[commodity]": crop,
-      },
-      timeout: 10000,
-    });
+    const params = {
+      "api-key": process.env.DATA_GOV_API_KEY,
+      format: "json",
+      limit: 500,
+      "filters[commodity]": crop,
+    };
+
+    if (state !== "ALL") {
+      params["filters[state]"] = state;
+    }
+
+    const response = await axios.get(DATA_GOV_URL, { params, timeout: 10000 });
+
 
     const records = response.data.records;
 
@@ -29,6 +32,7 @@ async function getMarketPrices(state, crop) {
       prices: records.map((r) => ({
         market: r.market,
         district: r.district,
+        state: r.state,  
         modal_price: Number(r.modal_price),
         min_price: Number(r.min_price),
         max_price: Number(r.max_price),

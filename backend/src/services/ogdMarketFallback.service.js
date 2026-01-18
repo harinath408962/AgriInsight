@@ -15,17 +15,20 @@ function parseAgmarknetDate(dateStr) {
 async function fetchMarketWithFallback({ state, commodity }) {
   let allRecords = [];
 
-  for (let page = 0; page < MAX_PAGES; page++) {
-    const res = await axios.get(BASE_URL, {
-      params: {
-        "api-key": process.env.DATA_GOV_API_KEY,
-        format: "json",
-        limit: PAGE_SIZE,
-        offset: page * PAGE_SIZE,
-        "filters[state]": state,
-        "filters[commodity]": commodity,
-      },
-    });
+for (let page = 0; page < MAX_PAGES; page++) {
+  const params = {
+    "api-key": process.env.DATA_GOV_API_KEY,
+    format: "json",
+    limit: PAGE_SIZE,
+    offset: page * PAGE_SIZE,
+    "filters[commodity]": commodity,
+  };
+
+  if (state !== "ALL") {
+    params["filters[state]"] = state;
+  }
+
+  const res = await axios.get(BASE_URL, { params });
 
     const records = res.data.records || [];
     if (records.length === 0) break;
@@ -37,6 +40,7 @@ async function fetchMarketWithFallback({ state, commodity }) {
       allRecords.push({
         market: r.market,
         district: r.district,
+        state: r.state,
         modal_price: Number(r.modal_price),
         arrival_date: date,
       });
