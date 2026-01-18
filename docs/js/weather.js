@@ -56,14 +56,20 @@ window.onload = () => {
 
   // SAFETY: if cities file fails, still work
   if (typeof INDIAN_CITIES !== "undefined" && INDIAN_CITIES.length > 0) {
-    INDIAN_CITIES.sort((a, b) => a.city.localeCompare(b.city)).forEach(
-      ({ city, state }) => {
-        const option = document.createElement("option");
-        option.value = city.trim();
-        option.textContent = `${city}, ${state}`;
-        citySelect.appendChild(option);
-      }
-    );
+    INDIAN_CITIES
+  .sort((a, b) => {
+    const stateCompare = a.state.localeCompare(b.state);
+    return stateCompare !== 0
+      ? stateCompare
+      : a.city.localeCompare(b.city);
+  })
+  .forEach(({ city, state }) => {
+    const option = document.createElement("option");
+    option.value = city.trim();
+    option.textContent = `${city}, ${state}`;
+    citySelect.appendChild(option);
+  });
+
   } else {
     // FALLBACK city
     const option = document.createElement("option");
