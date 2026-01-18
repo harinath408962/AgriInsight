@@ -7,13 +7,24 @@ const STATE_API = `${API_BASE}/market/state-overview`;
 
 const STATES = [
   "Andhra Pradesh",
-  "Telangana",
+  "Assam",
+  "Chandigarh",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
   "Karnataka",
-  "Tamil Nadu",
+  "Kerala",
+  "Madhya Pradesh",
   "Maharashtra",
+  "Odisha",
+  "Punjab",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
   "Uttar Pradesh",
-  "Gujarat"
-];
+  "West Bengal"
+]
+;
 
 const stateSelect = document.getElementById("state");
 const summaryDiv = document.getElementById("summary");
