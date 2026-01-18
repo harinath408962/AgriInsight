@@ -1,132 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>AgriInsight – Market Advisory</title>
+<html>
+  <head>
+    <title>AgriInsight – Market Advisory</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/market.css" />
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        max-width: 1100px;
+        margin: auto;
+      }
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
+      h2 {
+        margin-bottom: 5px;
+      }
 
-    h2 {
-      margin-bottom: 8px;
-    }
+      .subtitle {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 20px;
+      }
 
-    .controls {
-      margin-top: 10px;
-    }
+      /* CONTROLS */
+      .controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin: 15px 0 25px;
+      }
 
-    .controls select,
-    .controls button {
-      padding: 6px;
-      margin-right: 6px;
-    }
+      .controls select,
+      .controls button {
+        padding: 6px 10px;
+      }
 
-    .decision-card {
-      background: #f0f9ff;
-      border-left: 6px solid #0284c7;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
+      /* INSIGHT CARD */
+      .decision-card {
+        background: #f0f9ff;
+        border-left: 6px solid #0284c7;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+      }
 
-    .chart-box {
-      margin-top: 25px;
-      height: 380px;
-    }
+      /* CHART */
+      .chart-section {
+        margin-bottom: 30px;
+      }
 
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-      background: #ffffff;
-    }
+      .chart-box {
+        height: 400px;
+      }
 
-    th, td {
-      border: 1px solid #e5e7eb;
-      padding: 8px;
-      font-size: 13px;
-      text-align: left;
-    }
+      /* TABLE */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
 
-    th {
-      background: #f8fafc;
-    }
-  </style>
-</head>
+      th,
+      td {
+        border: 1px solid #e5e7eb;
+        padding: 8px;
+        font-size: 13px;
+        text-align: left;
+      }
 
-<body>
-  <h2>AgriInsight – Market Advisory</h2>
-  <p style="font-size:13px;color:#555;">
-    Compare mandi prices across states and markets to make informed selling decisions.
-  </p>
+      th {
+        background: #f8fafc;
+      }
+    </style>
+  </head>
 
-  <!-- INPUTS -->
-  <div class="controls">
-    <label>Crop:</label>
-    <select id="crop"></select>
+  <body>
+    <h2>Market Dashboard</h2>
+    <div class="subtitle">
+      Compare mandi prices across markets to support selling and holding decisions.
+    </div>
 
-    <label>State:</label>
-    <select id="state"></select>
- 
+    <!-- CONTROLS (TOP) -->
+    <div class="controls">
+      <select id="state">
+        <option value="">Select State</option>
+        <option>Karnataka</option>
+        <option>West Bengal</option>
+        <option>Maharashtra</option>
+        <option>Andhra Pradesh</option>
+        <option>Telangana</option>
+        <option>Tamil Nadu</option>
+        <option>Kerala</option>
+        <option>Uttar Pradesh</option>
+      </select>
 
+      <select id="crop">
+        <option value="">Select Crop</option>
+        <option>Tomato</option>
+        <option>Potato</option>
+        <option>Onion</option>
+        <option>Green Chilli</option>
+        <option>Brinjal</option>
+      </select>
 
-    <label>Sort:</label>
-    <select id="sort">
-      <option value="desc">High → Low</option>
-      <option value="asc">Low → High</option>
-    </select>
+      <select id="sort">
+        <option value="desc">Price: High → Low</option>
+        <option value="asc">Price: Low → High</option>
+      </select>
 
-    <button onclick="loadMarket()">Apply</button>
-  </div>
+      <button onclick="loadMarket()">Apply</button>
+    </div>
 
-  <!-- INSIGHT -->
-  <div id="insights" class="decision-card">
-  <button
-    id="speakMarket"
-    style="float:right; padding:6px; cursor:pointer;"
-  >
-    🔊 Speak Insight
-  </button>
+    <!-- INSIGHTS -->
+    <div id="insights" class="decision-card">
+      Select state and crop to view market insights.
+    </div>
 
-  <div id="insightContent">
-    Select crop and state to view market insights.
-  </div>
-</div>
+    <!-- GRAPH -->
+    <div class="chart-section">
+      <h3>Market Price Comparison</h3>
+      <p class="subtitle">
+        Visual comparison of modal prices across selected mandis.
+      </p>
 
+      <div class="chart-box">
+        <canvas id="marketChart"></canvas>
+      </div>
+    </div>
 
-  <!-- CHART -->
-  <h3>Market Price Comparison</h3>
-  <p style="font-size:13px;color:#555;">
-    Modal price comparison across selected mandis.
-  </p>
+    <!-- TABLE -->
+    <h3>Market Price Table</h3>
+    <p class="subtitle">
+      Detailed mandi-wise pricing information for the selected crop.
+    </p>
 
-  <div class="chart-box">
-    <canvas id="marketChart"></canvas>
-  </div>
+    <table id="marketTable">
+      <thead>
+        <tr>
+          <th>Market Name</th>
+          <th>District</th>
+          <th>Market Price (₹)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-  <!-- TABLE -->
-  <h3>Market Price Table</h3>
-  <p style="font-size:13px;color:#555;">
-    Detailed mandi-wise pricing information.
-  </p>
-
-  <table id="marketTable">
-    <thead>
-      <tr>
-        <th>Market</th>
-        <th>District</th>
-        <th>State</th>
-        <th>Modal Price (₹)</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <script src="js/market-v2.js"></script>
-</body>
+    <script src="js/market-v2.js"></script>
+  </body>
 </html>

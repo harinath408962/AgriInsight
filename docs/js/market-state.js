@@ -56,16 +56,11 @@ async function loadStateOverview() {
   }
 }
 
-function renderSummary(data) {
-  summaryDiv.innerHTML = `
-    <b>State:</b> ${data.state}<br>
-    <b>Date:</b> ${data.latest_date}<br>
-    <b>Total crops available:</b> ${data.total_crops}<br>
-    <b>Total markets reporting:</b> ${data.total_markets}
-  `;
-}
+
 
 function renderTop10(overview) {
+  top10Div.innerHTML = "";
+
   const top10 = [...overview]
     .sort((a, b) => b.avg_price - a.avg_price)
     .slice(0, 10);
@@ -73,46 +68,62 @@ function renderTop10(overview) {
   top10.forEach((c) => {
     top10Div.innerHTML += `
       <div class="crop-card">
-        <b>${c.crop}</b><br>
-        Avg: ₹${c.avg_price}<br>
-        High: ₹${c.max_price}<br>
-        Low: ₹${c.min_price}<br>
-        Markets: ${c.markets_count}
+        <b style="font-size:14px;">${c.crop}</b><br>
+        <span style="font-size:15px; font-weight:bold;">₹${c.avg_price}</span>
+        <span style="font-size:12px; color:#555;"> avg</span><br>
+        <span style="font-size:12px; color:#555;">
+          High: ₹${c.max_price} · Low: ₹${c.min_price}
+        </span><br>
+        <span style="font-size:12px; color:#555;">
+          Markets: ${c.markets_count}
+        </span>
       </div>
     `;
   });
 }
 
-function renderTop10(overview) {
-  const top10 = [...overview]
-    .sort((a, b) => b.avg_price - a.avg_price)
-    .slice(0, 10);
 
-  top10.forEach((c) => {
-    top10Div.innerHTML += `
-      <div class="crop-card">
-        <b>${c.crop}</b><br>
-        Avg: ₹${c.avg_price}<br>
-        High: ₹${c.max_price}<br>
-        Low: ₹${c.min_price}<br>
-        Markets: ${c.markets_count}
-      </div>
-    `;
-  });
-}
 
 function renderTable(overview) {
+  tableBody.innerHTML = "";
+
   overview
     .sort((a, b) => b.avg_price - a.avg_price)
     .forEach((c) => {
       tableBody.innerHTML += `
         <tr>
-          <td>${c.crop}</td>
-          <td>₹${c.avg_price}</td>
-          <td>${c.max_market}</td>
-          <td>${c.min_market}</td>
+          <td><b>${c.crop}</b></td>
+          <td><b>₹${c.avg_price}</b></td>
+          <td style="color:#555;">${c.max_market}</td>
+          <td style="color:#555;">${c.min_market}</td>
           <td>${c.markets_count}</td>
         </tr>
       `;
     });
 }
+
+function renderSummary(data) {
+  summaryDiv.innerHTML = `
+    <button id="speakState"
+      style="float:right; padding:6px; cursor:pointer;">
+      🔊 Speak Overview
+    </button>
+
+    <div style="font-size:14px; line-height:1.6;">
+      <b style="font-size:16px;">${data.state} – Market Snapshot</b><br>
+      Date: ${data.latest_date}<br>
+      Crops available today: <b>${data.total_crops}</b><br>
+      Markets reporting: <b>${data.total_markets}</b>
+    </div>
+  `;
+
+  document.getElementById("speakState").onclick = () => {
+    const msg = new SpeechSynthesisUtterance(
+      `${data.total_crops} crops are available today in ${data.state}.
+       ${data.total_markets} markets are reporting prices.`
+    );
+    speechSynthesis.cancel();
+    speechSynthesis.speak(msg);
+  };
+}
+

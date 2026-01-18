@@ -1,101 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>AgriInsight</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        max-width: 900px;
-        margin: auto;
-        padding: 40px 20px;
-        background: #f9fafb;
-      }
-      h1 {
-        font-size: 36px;
-        margin-bottom: 10px;
-      }
-      .subtitle {
-        font-size: 18px;
-        color: #555;
-        margin-bottom: 30px;
-      }
-      .features {
-        margin-bottom: 30px;
-      }
-      .features li {
-        margin: 10px 0;
-        font-size: 16px;
-      }
-      .actions {
-        margin: 30px 0;
-      }
-      .actions a {
-        display: inline-block;
-        padding: 14px 24px;
-        margin-right: 15px;
-        text-decoration: none;
-        background: #2563eb;
-        color: white;
-        border-radius: 6px;
-        font-weight: bold;
-      }
-      .actions a.secondary {
-        background: #16a34a;
-      }
-      .lang {
-        margin: 20px 0;
-      }
-      .lang button {
-        margin-right: 10px;
-        padding: 6px 12px;
-        border: 1px solid #ccc;
-        background: white;
-        cursor: pointer;
-      }
-      footer {
-        margin-top: 40px;
-        font-size: 13px;
-        color: #666;
-        border-top: 1px solid #ddd;
-        padding-top: 15px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>AgriInsight</h1>
-    <div class="subtitle">Smart Decision Support for Farmers</div>
+<head>
+  <meta charset="UTF-8" />
+  <title>AgriInsight</title>
 
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px;
+      background: #f9fafb;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .features {
+      margin: 25px 0;
+    }
+
+    .features li {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .lang {
+      margin: 30px 0;
+    }
+
+    .lang button {
+      margin-right: 10px;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+    }
+
+    .actions {
+      margin: 40px 0;
+    }
+
+    .actions h3 {
+      margin-bottom: 10px;
+    }
+
+    .actions a {
+      display: inline-block;
+      padding: 14px 22px;
+      margin: 10px 15px 10px 0;
+      text-decoration: none;
+      color: white;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .weather {
+      background: #2563eb;
+    }
+
+    .market-state {
+      background: #16a34a;
+    }
+
+    .market-general {
+      background: #0f766e;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 13px;
+      color: #666;
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>AgriInsight</h1>
+  <div class="subtitle">Smart Decision Support for Farmers</div>
+
+  <p>
+    AgriInsight is a decision-support system that transforms real-time
+    weather and agricultural market data into clear, actionable advisories
+    to help farmers make informed planning and selling decisions.
+  </p>
+
+  <ul class="features">
+    <li> Weather-based risk assessment and field activity guidance</li>
+    <li> Market price analysis to support sell / hold decisions</li>
+    <li> Transparent, explainable advisories with clear recommendations</li>
+  </ul>
+
+
+  <div class="actions">
+    <h3>Advisory Modules</h3>
+
+    <a href="weather.html" class="weather">
+      Weather Advisory
+    </a>
+
+    <a href="market-state.html" class="market-state">
+      State Market Overview
+    </a>
+
+    <a href="market.html" class="market-general">
+      Crop-wise Market Advisory
+    </a>
+  </div>
+
+  <footer>
+    <p>Built as part of <b>AgriConnect</b> – Academic Project</p>
+    <p>Data sources: OpenWeather, Agmarknet (Government of India)</p>
     <p>
-      Convert weather and market data into clear, actionable crop advisories.
+      Advisories are guidance-only and intended to support decision-making;
+      outcomes are not guaranteed.
     </p>
+  </footer>
 
-    <ul class="features">
-      <li>✔ Weather-based risk and field activity guidance</li>
-      <li>✔ Market price trend analysis for sell / hold decisions</li>
-      <li>✔ Explainable advisories with clear actions</li>
-    </ul>
-
-    <div class="lang">
-      <b>Choose Language (Beta):</b><br /><br />
-      <button>English</button>
-      <button>हिंदी</button>
-      <button>ಕನ್ನಡ</button>
-      <button>తెలుగు</button>
-      <div style="font-size: 13px; color: #777; margin-top: 5px">
-        Currently supports English. Other languages planned.
-      </div>
-    </div>
-
-    <div class="actions">
-      <a href="weather.html">Weather Advisory</a>
-      <a href="market.html" class="secondary">Market Advisory</a>
-    </div>
-
-    <footer>
-      <p>Built as part of AgriConnect – Academic Project</p>
-      <p>Data sources: OpenWeather, Agmarknet</p>
-      <p>Advisories are guidance-only and not guaranteed outcomes.</p>
-    </footer>
-  </body>
+</body>
 </html>
