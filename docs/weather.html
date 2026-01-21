@@ -1,114 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>AgriInsight – Weather</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <title>AgriInsight – Weather</title>
 
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-      }
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-      .decision-card p {
-        margin: 8px 0;
-      }
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
 
-      .actions li {
-        margin-left: 20px;
-      }
+    .decision-card p {
+      margin: 8px 0;
+    }
 
-      .dashboard {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-        margin-top: 25px;
-      }
+    .actions li {
+      margin-left: 20px;
+    }
 
-      .card {
-        padding: 15px;
-        border-radius: 8px;
-        background: #f2f6ff;
-      }
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 25px;
+    }
 
-      .card h3 {
-        font-size: 14px;
-        color: #555;
-      }
+    .card {
+      padding: 15px;
+      border-radius: 8px;
+      background: #f2f6ff;
+    }
 
-      .card p {
-        font-size: 18px;
-        font-weight: bold;
-      }
-    </style>
+    .card h3 {
+      font-size: 14px;
+      color: #555;
+    }
 
-    <style>
-      .decision-card {
-        background: #f0fdf4;
-        border-left: 6px solid #16a34a;
-        padding: 20px;
-        border-radius: 10px;
-        margin-top: 20px;
-      }
+    .card p {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
 
-      .decision-card.low {
-        border-color: #16a34a;
-        background: #f0fdf4;
-      }
+  <style>
+    .decision-card {
+      background: #f0fdf4;
+      border-left: 6px solid #16a34a;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
 
-      .decision-card.medium {
-        border-color: #f59e0b;
-        background: #fff7ed;
-      }
+    .decision-card.low {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
 
-      .decision-card.high {
-        border-color: #dc2626;
-        background: #fff1f2;
-      }
+    .decision-card.medium {
+      border-color: #f59e0b;
+      background: #fff7ed;
+    }
+
+    .decision-card.high {
+      border-color: #dc2626;
+      background: #fff1f2;
+    }
 
 
-      .decision-header h2 {
-        margin: 0;
-      }
+    .decision-header h2 {
+      margin: 0;
+    }
 
-      .forecast-day h4 {
-        margin: 5px 0;
-        font-size: 14px;
-      }
+    .forecast-day h4 {
+      margin: 5px 0;
+      font-size: 14px;
+    }
 
-      .forecast-day p {
-        margin: 3px 0;
-        font-size: 13px;
-      }
+    .forecast-day p {
+      margin: 3px 0;
+      font-size: 13px;
+    }
 
-      #forecastTable {
-        width: 100%;
-        margin-top: 15px;
-        border-collapse: collapse;
-        background: #ffffff;
-      }
+    #forecastTable {
+      width: 100%;
+      margin-top: 15px;
+      border-collapse: collapse;
+      background: #ffffff;
+    }
 
-      #forecastTable th,
-      #forecastTable td {
-        text-align: center;
-        font-size: 13px;
-      }
+    #forecastTable th,
+    #forecastTable td {
+      text-align: center;
+      font-size: 13px;
+    }
 
-      #forecastTable th {
-        background: #f8fafc;
-      }
-      
-      #forecastTable td,
-#forecastTable th {
-  border: 1px solid #e5e7eb;
-  padding: 8px;
-}
-    </style>
+    #forecastTable th {
+      background: #f8fafc;
+    }
+
+    #forecastTable td,
+    #forecastTable th {
+      border: 1px solid #e5e7eb;
+      padding: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #555;
+      font-weight: bold;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .back-btn:hover {
+      color: #16a34a;
+    }
+  </style>
   </head>
 
   <body>
+    <a href="index.html" class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Back to Home
+    </a>
+
     <h2>AgriInsight – Weather Advisory</h2>
 
     <label>Select City:</label>
@@ -124,9 +149,9 @@
 
     <!-- 5-DAY FORECAST -->
     <h3>5-Day Average Weather Forecast</h3>
-<p style="font-size:13px;color:#555;">
-  Values shown are daily averages based on forecast data.
-</p>
+    <p style="font-size:13px;color:#555;">
+      Values shown are daily averages based on forecast data.
+    </p>
 
 
     <table id="forecastTable">
@@ -161,4 +186,5 @@
     <script src="js/indianCities.js"></script>
     <script src="js/weather.js"></script>
   </body>
+
 </html>
