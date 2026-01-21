@@ -1,138 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <title>AgriInsight</title>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 900px;
-      margin: auto;
-      padding: 40px 20px;
-      background: #f9fafb;
-    }
-
-    h1 {
-      font-size: 36px;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      font-size: 18px;
-      color: #555;
-      margin-bottom: 30px;
-    }
-
-    p {
-      font-size: 16px;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    .features {
-      margin: 25px 0;
-    }
-
-    .features li {
-      margin: 10px 0;
-      font-size: 16px;
-    }
-
-    .lang {
-      margin: 30px 0;
-    }
-
-    .lang button {
-      margin-right: 10px;
-      padding: 6px 12px;
-      border: 1px solid #ccc;
-      background: white;
-      cursor: pointer;
-    }
-
-    .actions {
-      margin: 40px 0;
-    }
-
-    .actions h3 {
-      margin-bottom: 10px;
-    }
-
-    .actions a {
-      display: inline-block;
-      padding: 14px 22px;
-      margin: 10px 15px 10px 0;
-      text-decoration: none;
-      color: white;
-      border-radius: 6px;
-      font-weight: bold;
-    }
-
-    .weather {
-      background: #2563eb;
-    }
-
-    .market-state {
-      background: #16a34a;
-    }
-
-    .market-general {
-      background: #0f766e;
-    }
-
-    footer {
-      margin-top: 50px;
-      font-size: 13px;
-      color: #666;
-      border-top: 1px solid #ddd;
-      padding-top: 15px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgriInsight - Smart Decision Support</title>
+  <link rel="stylesheet" href="css/index.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
 <body>
 
-  <h1>AgriInsight</h1>
-  <div class="subtitle">Smart Decision Support for Farmers</div>
+  <!-- Main Content (Restored AgriInsight) -->
+  <div class="feature-container">
 
-  <p>
-    AgriInsight is a decision-support system that transforms real-time
-    weather and agricultural market data into clear, actionable advisories
-    to help farmers make informed planning and selling decisions.
-  </p>
+    <div class="hero-card">
+      <h1 class="hero-title">AgriInsight</h1>
+      <div class="hero-subtitle">Smart Decision Support for Farmers</div>
 
-  <ul class="features">
-    <li> Weather-based risk assessment and field activity guidance</li>
-    <li> Market price analysis to support sell / hold decisions</li>
-    <li> Transparent, explainable advisories with clear recommendations</li>
-  </ul>
+      <p class="hero-desc">
+        AgriInsight is a decision-support system that transforms real-time
+        weather and agricultural market data into clear, actionable advisories
+        to help farmers make informed planning and selling decisions.
+      </p>
 
+      <ul class="features-list">
+        <li>
+          <i class="fa-solid fa-check-circle"></i>
+          Weather-based risk assessment and field activity guidance
+        </li>
+        <li>
+          <i class="fa-solid fa-check-circle"></i>
+          Market price analysis to support sell / hold decisions
+        </li>
+        <li>
+          <i class="fa-solid fa-check-circle"></i>
+          Transparent, explainable advisories with clear recommendations
+        </li>
+      </ul>
 
-  <div class="actions">
-    <h3>Advisory Modules</h3>
+      <div class="modules-grid">
+        <a href="weather.html" class="module-link btn-weather">
+          <i class="fa-solid fa-cloud-sun-rain"></i>
+          Weather Advisory
+        </a>
 
-    <a href="weather.html" class="weather">
-      Weather Advisory
-    </a>
+        <a href="market-state.html" class="module-link btn-market-state">
+          <i class="fa-solid fa-chart-line"></i>
+          State Market Overview
+        </a>
 
-    <a href="market-state.html" class="market-state">
-      State Market Overview
-    </a>
+        <a href="market.html" class="module-link btn-market-crop">
+          <i class="fa-solid fa-leaf"></i>
+          Crop-wise Market Advisory
+        </a>
+      </div>
 
-    <a href="market.html" class="market-general">
-      Crop-wise Market Advisory
-    </a>
+    </div>
+
+    <footer>
+      <p>Built as part of <b>AgriConnect</b> – Academic Project</p>
+      <p>Data sources: OpenWeather, Agmarknet (Government of India)</p>
+      <p>
+        Advisories are guidance-only and intended to support decision-making;
+        outcomes are not guaranteed.
+      </p>
+    </footer>
+
   </div>
 
-  <footer>
-    <p>Built as part of <b>AgriConnect</b> – Academic Project</p>
-    <p>Data sources: OpenWeather, Agmarknet (Government of India)</p>
-    <p>
-      Advisories are guidance-only and intended to support decision-making;
-      outcomes are not guaranteed.
-    </p>
-  </footer>
-
 </body>
+
 </html>
